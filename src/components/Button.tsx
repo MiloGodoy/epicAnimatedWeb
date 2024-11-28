@@ -1,12 +1,12 @@
-import React from 'react'
 
 interface ButtonProps {
-    id:string,
-    title: string,
-    righIcon: string,
-    leftIcon: string,
-    containerClass: string
+    id: string;
+    title: string;
+    leftIcon?: React.ReactNode; // React.ReactNode permite cualquier nodo de React
+    righIcon?: React.ReactNode;
+    containerClass?: string;
 }
+
 
 function Button({ title, id, righIcon, leftIcon, containerClass }: ButtonProps) {
   return (

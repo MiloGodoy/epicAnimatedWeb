@@ -15,7 +15,7 @@ function Hero() {
     const [loadedVideos, setLoadedVideos] = useState(0)
 
     const totalVideos = 4;
-    const nextVideoRef = useRef(null)
+    const nextVideoRef = useRef<HTMLVideoElement | null>(null);
 
     const handleVideoLoad = () => {
         setLoadedVideos((prev) => prev + 1)
@@ -36,28 +36,31 @@ function Hero() {
     }, [loadedVideos])
 
     useGSAP(() => {
-        if(hasClicked) {
-            gsap.set('#next-video', { visibility: 'visible' });
-
-            gsap.to('#next-video', {
-                transformOrigin: 'center center',
-                scale: 1,
-                width: '100%',
-                height: '100%',
-                duration: 1,
-                ease: 'power1.inOut',
-                onStart: () => nextVideoRef.current.play(),
-            })
-
-            gsap.from('#current-video', {
-                transformOrigin: 'center center',
-                scale: 0,
-                duration: 1.5,
-                ease: 'power1.inOut'
-            })
+        if (hasClicked) {
+          gsap.set('#next-video', { visibility: 'visible' });
+      
+          gsap.to('#next-video', {
+            transformOrigin: 'center center',
+            scale: 1,
+            width: '100%',
+            height: '100%',
+            duration: 1,
+            ease: 'power1.inOut',
+            onStart: () => {
+              if (nextVideoRef.current) {
+                nextVideoRef.current.play(); // Llamada síncrona a play
+              }
+            },
+          });
+      
+          gsap.from('#current-video', {
+            transformOrigin: 'center center',
+            scale: 0,
+            duration: 1.5,
+            ease: 'power1.inOut',
+          });
         }
-
-    }, {dependencies: [currentIndex], revertOnUpdate: true})
+      }, { dependencies: [currentIndex], revertOnUpdate: true });
 
     useGSAP(() => {
         gsap.set('#video-frame', {
